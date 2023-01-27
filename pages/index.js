@@ -3,8 +3,8 @@ import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.scss";
 import * as THREE from "three";
 import { useRef, useEffect } from "react";
-const inter = Inter({ subsets: ["latin"] });
-
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { gsap } from "gsap";
 export default function Home() {
   const canvasRef = useRef();
 
@@ -40,10 +40,17 @@ export default function Home() {
     scene.add(camera);
 
     // Render
-    const renderer = new THREE.WebGLRenderer({ canvasRef });
+    const canvas = document.querySelector(".webgl");
+    const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(sizes.width, sizes.height);
     renderer.render(scene, camera);
-    document.body.appendChild(renderer.domElement);
+
+    // Controls
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.autoRotate = true;
+    controls.enablePan = false;
+    controls.enableZoom = false;
 
     //Resize
     window.addEventListener("resize", () => {
@@ -57,6 +64,7 @@ export default function Home() {
     const loop = () => {
       renderer.render(scene, camera);
       window.requestAnimationFrame(loop);
+      controls.update();
     };
     loop();
   }, []);
@@ -69,7 +77,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div ref={canvasRef}></div>
+      <canvas className={"webgl"}></canvas>
     </>
   );
 }
