@@ -16,7 +16,7 @@
 1. Clone the repo.
 
 ```bash
-git clone https://github.com/yen-han/AI-Message-Generator.git
+git clone https://github.com/yen-han/spin-a-ball.git
 ```
 
 2. Install NPM packages.
